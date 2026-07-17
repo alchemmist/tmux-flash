@@ -10,7 +10,7 @@ your selection if one is active**.
 
 ## Why
 
-flash.nvim's killer workflow in visual mode: start a selection with `v`, press
+flash.nvim's workflow in visual mode: start a selection with `v`, press
 `s`, type a string, press the label — and your selection now ends exactly
 where you wanted. Nothing in the tmux ecosystem replicated that:
 
@@ -19,7 +19,7 @@ where you wanted. Nothing in the tmux ecosystem replicated that:
   and cancels copy-mode before jumping, destroying any active selection.
 - [tmux-thumbs](https://github.com/fcsonline/tmux-thumbs) /
   [tmux-fingers](https://github.com/Morantron/tmux-fingers) hint pre-defined
-  patterns (URLs, paths, hashes) for *copying*, not free-text *navigation*.
+  patterns (URLs, paths, hashes) for _copying_, not free-text _navigation_.
 - tmux's built-in copy-mode search (`/`) searches the entire scrollback
   history, not just what you're looking at — and has no labels.
 
@@ -44,23 +44,23 @@ technique (pioneered by tmux-fingers):
 
 Behavior deliberately mirrors flash.nvim's defaults:
 
-| flash.nvim                                  | tmux-flash |
-| ------------------------------------------- | ---------- |
-| exact-match search mode                     | same |
-| smartcase (lowercase = insensitive)         | same |
-| labels shown from the first typed character | same |
-| label drawn *after* the match               | same |
-| labels that could continue the search are skipped | same |
-| matches labeled nearest-to-cursor first     | same |
-| backdrop dimming                            | same |
-| jump lands on match start                   | same |
+| flash.nvim                                        | tmux-flash |
+| ------------------------------------------------- | ---------- |
+| exact-match search mode                           | same       |
+| smartcase (lowercase = insensitive)               | same       |
+| labels shown from the first typed character       | same       |
+| label drawn _after_ the match                     | same       |
+| labels that could continue the search are skipped | same       |
+| matches labeled nearest-to-cursor first           | same       |
+| backdrop dimming                                  | same       |
+| jump lands on match start                         | same       |
 
 ## Install
 
 ### TPM
 
 ```tmux
-set -g @plugin 'YOURUSER/tmux-flash'
+set -g @plugin 'AndreVicencio/tmux-flash'
 ```
 
 Then `prefix + I` to install.
@@ -68,7 +68,7 @@ Then `prefix + I` to install.
 ### Manual
 
 ```sh
-git clone https://github.com/YOURUSER/tmux-flash ~/.config/tmux/tmux-flash
+git clone https://github.com/AndreVicencio/tmux-flash ~/.config/tmux/tmux-flash
 ```
 
 ```tmux
@@ -78,15 +78,15 @@ run-shell ~/.config/tmux/tmux-flash/flash.tmux
 
 ## Usage
 
-| Key                | Action |
-| ------------------ | ------ |
-| `prefix + [`       | enter copy-mode (tmux built-in) |
-| `s`                | start flash search |
-| *type characters*  | narrow matches live |
-| *label key*        | jump to that match |
-| `Enter`            | jump to the closest match |
-| `Backspace`        | edit the pattern |
-| `Esc` / `Ctrl-C`   | cancel, leaving copy-mode state untouched |
+| Key               | Action                                    |
+| ----------------- | ----------------------------------------- |
+| `prefix + [`      | enter copy-mode (tmux built-in)           |
+| `s`               | start flash search                        |
+| _type characters_ | narrow matches live                       |
+| _label key_       | jump to that match                        |
+| `Enter`           | jump to the closest match                 |
+| `Backspace`       | edit the pattern                          |
+| `Esc` / `Ctrl-C`  | cancel, leaving copy-mode state untouched |
 
 The selection workflow: `prefix + [` → `v` → `s` → type → label →
 selection now spans from your anchor to the target → `y` to yank.
