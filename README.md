@@ -8,6 +8,10 @@ your selection if one is active**.
 
 <!-- TODO: add screenshot / recording here -->
 
+
+https://github.com/user-attachments/assets/58507484-3bcd-491c-b8d8-9e422079160d
+
+
 ## Why
 
 flash.nvim's workflow in visual mode: start a selection with `v`, press
