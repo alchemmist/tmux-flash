@@ -18,12 +18,21 @@ set -eu
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # One display-message round-trip for everything we need about the pane.
-info="$(tmux display-message -p '#{pane_id};#{scroll_position};#{copy_cursor_x};#{copy_cursor_y};#{pane_width};#{pane_height};#{pane_in_mode}')"
-IFS=';' read -r pane scroll cx cy w h inmode <<<"$info"
+info="$(tmux display-message -p '#{pane_id};#{scroll_position};#{copy_cursor_x};#{copy_cursor_y};#{cursor_x};#{cursor_y};#{pane_width};#{pane_height};#{pane_in_mode}')"
+IFS=';' read -r pane scroll copy_cx copy_cy pane_cx pane_cy w h inmode <<<"$info"
 
-# Only meaningful from copy-mode (the binding lives in copy-mode-vi, but be
-# defensive in case someone binds it elsewhere).
-[ "$inmode" = "1" ] || exit 0
+from_normal="$(tmux show-option -gqv '@flash-from-normal-mode')"
+if [ "$inmode" = "1" ]; then
+  cx="$copy_cx"
+  cy="$copy_cy"
+  enter_copy_mode=0
+else
+  [ "$from_normal" = "on" ] || exit 0
+  scroll=0
+  cx="$pane_cx"
+  cy="$pane_cy"
+  enter_copy_mode=1
+fi
 
 # Capture exactly the visible viewport. capture-pane line 0 is the top of the
 # *unscrolled* screen, so when scrolled up by N the visible region is -N to
@@ -39,7 +48,7 @@ labels="$(tmux show-option -gqv '@flash-labels')"
 # Spawn the replica detached (-d) so it never becomes the current window on
 # its own, and print (-P) its pane id so we can swap it into place.
 replica="$(tmux new-window -dP -F '#{pane_id}' -n flash \
-  "exec /usr/bin/env python3 '$DIR/flash.py' --orig '$pane' --capture '$cap' --cx '$cx' --cy '$cy' --width '$w' --height '$h' --labels '${labels:-asdfghjklqwertyuiopzxcvbnm}'")"
+  "exec /usr/bin/env python3 '$DIR/flash.py' --orig '$pane' --capture '$cap' --cx '$cx' --cy '$cy' --width '$w' --height '$h' --labels '${labels:-asdfghjklqwertyuiopzxcvbnm}' --enter-copy-mode '$enter_copy_mode'")"
 
 tmux swap-pane -s "$replica" -t "$pane"
 tmux select-pane -t "$replica"

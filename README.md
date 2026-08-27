@@ -102,7 +102,12 @@ Set in `tmux.conf` (defaults shown):
 ```tmux
 set -g @flash-key 's'                            # trigger key in copy-mode-vi
 set -g @flash-labels 'asdfghjklqwertyuiopzxcvbnm' # label alphabet, in order
+set -g @flash-from-normal-mode 'off'              # allow triggering before copy-mode
 ```
+
+With `@flash-from-normal-mode` set to `on`, the trigger may run directly from
+normal mode. The search only captures the visible viewport. Choosing a target
+enters copy-mode and moves its cursor there; cancelling leaves copy-mode off.
 
 ## Requirements
 

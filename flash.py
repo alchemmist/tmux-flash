@@ -52,6 +52,7 @@ class Flash:
         self.cx, self.cy = opts.cx, opts.cy
         self.w, self.h = opts.width, opts.height
         self.alphabet = opts.labels
+        self.enter_copy_mode = opts.enter_copy_mode
         with open(opts.capture) as f:
             self.lines = f.read().split("\n")
         os.unlink(opts.capture)
@@ -147,6 +148,8 @@ class Flash:
         what makes v -> flash -> label behave like flash.nvim in visual mode.
         """
         self.restore()
+        if self.enter_copy_mode:
+            tmux("copy-mode", "-t", self.orig)
         if tmux_out("display-message", "-p", "-t", self.orig, "#{pane_in_mode}") != "1":
             return  # copy-mode ended underneath us; nothing safe to do
         sk = ["send-keys", "-X", "-t", self.orig]
@@ -223,6 +226,7 @@ def main():
     p.add_argument("--width", type=int, required=True)
     p.add_argument("--height", type=int, required=True)
     p.add_argument("--labels", default="asdfghjklqwertyuiopzxcvbnm")
+    p.add_argument("--enter-copy-mode", type=int, default=0)
     Flash(p.parse_args()).run()
 
 
